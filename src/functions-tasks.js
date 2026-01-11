@@ -163,6 +163,15 @@ function retry(/* func, attempts */) {
  *
  */
 function logger(/* func, logFunc */) {
+  // return (...args) => {
+  //   const { name } = func;
+  //   const textArgs = args.map(String).join(',');
+  //   const text = `${name}([${textArgs}])`;
+  //   logFunc(`${text} starts`);
+  //   const res = func(...args);
+  //   logFunc(`${text} ends`);
+  //   return res;
+  // };
   throw new Error('Not implemented');
 }
 
@@ -180,8 +189,15 @@ function logger(/* func, logFunc */) {
  *   partialUsingArguments(fn, 'a','b','c')('d') => 'abcd'
  *   partialUsingArguments(fn, 'a','b','c','d')() => 'abcd'
  */
-function partialUsingArguments(/* fn, ...args */) {
-  throw new Error('Not implemented');
+function partialUsingArguments(fn, ...args) {
+  const current = args;
+  return (...argsN) => {
+    const next = argsN;
+
+    const common = [...current, ...next];
+    const res = fn(...common);
+    return res;
+  };
 }
 
 /**
